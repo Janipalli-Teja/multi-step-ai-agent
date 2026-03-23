@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { type AgentTask, type MemoryEntry, type SSEEvent } from '../types';
 
-const BASE_URL = 'http://localhost:3001/api';
+// Load the API URL from the environment (e.g. Vercel) or fallback to local dev server
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 export const api = {
   health: () => axios.get(`${BASE_URL}/health`),

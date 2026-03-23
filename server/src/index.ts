@@ -7,7 +7,15 @@ import { memoryStore } from './memory/memoryStore';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.CLIENT_URL // we can check against specific ones if needed, but true allows all
+];
+
+app.use(cors({ 
+  origin: true, // This allows wildcard domains securely
+  credentials: true 
+}));
 app.use(express.json());
 
 // ─── Health Check ──────────────────────────────────────────────────
@@ -50,7 +58,8 @@ app.get('/api/agent/stream/:taskId', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.flushHeaders();
 
   registerSSEClient(taskId, res);

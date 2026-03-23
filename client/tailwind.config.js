@@ -7,9 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        bgBase: '#050810',
-        bgSurface: '#0d1117',
-        bgCard: '#111827',
+        bgBase: '#000000',
+        bgSurface: '#121212',
+        bgCard: '#1e1e1e',
         borderLight: 'rgba(255,255,255,0.07)',
       },
       fontFamily: {

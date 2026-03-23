@@ -5,9 +5,10 @@ import StepCard from './StepCard';
 interface AgentDashboardProps {
   task: AgentTask | null;
   liveThoughtIndex: number;
+  onRetry?: () => void;
 }
 
-const AgentDashboard: React.FC<AgentDashboardProps> = ({ task, liveThoughtIndex }) => {
+const AgentDashboard: React.FC<AgentDashboardProps> = ({ task, liveThoughtIndex, onRetry }) => {
   const stepsEndRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -16,7 +17,7 @@ const AgentDashboard: React.FC<AgentDashboardProps> = ({ task, liveThoughtIndex 
 
   if (!task) {
     return (
-      <div className="flex flex-col items-center justify-center p-10 md:py-20 text-center bg-[#0d1117]/60 border border-white/5 rounded-2xl backdrop-blur-xl">
+      <div className="flex flex-col items-center justify-center p-10 md:py-20 text-center bg-neutral-900/60 border border-white/5 rounded-2xl backdrop-blur-xl">
         <div className="relative w-[120px] h-[120px] mb-8 flex items-center justify-center">
           <div className="absolute inset-0 rounded-full border border-blue-500/30 animate-[orbit-spin_4s_linear_infinite]" />
           <div className="absolute inset-[15px] rounded-full border border-purple-500/25 animate-[orbit-spin_6s_linear_infinite_reverse]" />
@@ -41,7 +42,7 @@ const AgentDashboard: React.FC<AgentDashboardProps> = ({ task, liveThoughtIndex 
   return (
     <div className="flex flex-col gap-5">
       {/* Task Info Bar */}
-      <div className="flex flex-wrap md:flex-nowrap items-center gap-4 bg-[#0d1117]/80 border border-white/5 rounded-xl px-5 py-3.5 backdrop-blur-md">
+      <div className="flex flex-wrap md:flex-nowrap items-center gap-4 bg-neutral-900/80 border border-white/5 rounded-xl px-5 py-3.5 backdrop-blur-md">
         <div className="flex items-center gap-2">
           <span className="text-[11px] text-slate-500 font-semibold uppercase tracking-widest">Task ID</span>
           <span className="font-mono text-xs text-slate-400">{task.id.split('-')[0]}...</span>
@@ -57,12 +58,20 @@ const AgentDashboard: React.FC<AgentDashboardProps> = ({ task, liveThoughtIndex 
           <span className="text-xs text-slate-500 whitespace-nowrap">{completedCount}/{task.steps.length} steps</span>
         </div>
         
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          {task.status === 'failed' && onRetry && (
+            <button 
+              onClick={onRetry}
+              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500/20 hover:text-rose-300 transition-colors"
+            >
+              ⟳ Retry Task
+            </button>
+          )}
           <span className={`text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap border
             ${task.status === 'planning' ? 'bg-amber-500/15 text-amber-300 border-amber-500/30' : ''}
             ${task.status === 'executing' ? 'bg-blue-500/15 text-blue-300 border-blue-500/30' : ''}
             ${task.status === 'completed' ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' : ''}
-            ${task.status === 'failed' ? 'bg-rose-500/15 text-rose-300 border-rose-500/30' : ''}
+            ${task.status === 'failed' ? 'bg-white/5 text-slate-400 border-white/10' : ''}
           `}>
             {task.status === 'planning' && '🧠 Planning'}
             {task.status === 'executing' && '⚡ Executing'}
@@ -73,14 +82,14 @@ const AgentDashboard: React.FC<AgentDashboardProps> = ({ task, liveThoughtIndex 
       </div>
 
       {/* User Goal */}
-      <div className="flex items-start gap-3 bg-gradient-to-br from-blue-500/10 to-violet-500/5 border border-blue-500/20 rounded-xl p-4 md:px-5">
+      <div className="flex items-start gap-3 bg-neutral-800/30 border border-white/10 rounded-xl p-4 md:px-5">
         <span className="text-[11px] font-bold uppercase tracking-[0.08em] text-blue-500 mt-0.5 whitespace-nowrap">🎯 Goal</span>
         <p className="text-[15px] text-slate-100 italic leading-relaxed">"{task.userInput}"</p>
       </div>
 
       {/* Plan Overview */}
       {task.plan.length > 0 && (
-        <div className="bg-[#0d1117]/60 border border-white/5 rounded-xl p-5">
+        <div className="bg-neutral-900/60 border border-white/5 rounded-xl p-5">
           <h3 className="text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3">📋 Generated Plan</h3>
           <div className="flex flex-col gap-2">
             {task.plan.map((step, i) => (
@@ -112,7 +121,7 @@ const AgentDashboard: React.FC<AgentDashboardProps> = ({ task, liveThoughtIndex 
 
       {/* ReAct Loop Visualization */}
       {task.status === 'executing' && (
-        <div className="bg-[#0d1117]/60 border border-white/5 rounded-xl p-5 hidden sm:block">
+        <div className="bg-neutral-900/60 border border-white/5 rounded-xl p-5 hidden sm:block">
           <h3 className="text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3 text-center sm:text-left">🔄 ReAct Loop</h3>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 flex-wrap">
             {['Think', 'Act', 'Observe', 'Adjust'].map((phase, i) => (

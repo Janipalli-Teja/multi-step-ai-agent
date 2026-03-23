@@ -4,7 +4,7 @@ import { getToolDescriptions } from '../tools';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 export async function planTask(userInput: string): Promise<string[]> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `You are an autonomous AI agent planner. 
 Your job is to break down a user's high-level task into clear, specific, actionable steps.
@@ -48,7 +48,7 @@ export async function think(
   previousObservations: string,
   memory: string,
 ): Promise<{ thought: string; toolName: string; actionInput: Record<string, unknown> }> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `You are an autonomous AI agent executing a task step-by-step using the ReAct framework.
 
@@ -65,7 +65,7 @@ Think about what action to take for the CURRENT STEP, then choose the right tool
 Respond ONLY with a JSON object in this exact format:
 {
   "thought": "Your reasoning about what to do and why",
-  "toolName": "one of: calendar | notification | search | memory",
+  "toolName": "one of: calendar | email_sender | search | memory",
   "actionInput": { "action": "...", ... }
 }
 
@@ -90,7 +90,7 @@ JSON response:`;
   } else if (stepLower.includes('availab') || stepLower.includes('calendar') || stepLower.includes('schedule')) {
     return { thought: `I need to check the calendar for availability`, toolName: 'calendar', actionInput: { action: 'check_availability', date: new Date().toISOString().split('T')[0] } };
   } else if (stepLower.includes('notify') || stepLower.includes('email') || stepLower.includes('send')) {
-    return { thought: `I need to send notifications to the team`, toolName: 'notification', actionInput: { type: 'email', recipients: 'alice@team.com, bob@team.com, carol@team.com' } };
+    return { thought: `I need to send an email to the team`, toolName: 'email_sender', actionInput: { subject: 'Meeting Update', recipients: 'alice@team.com, bob@team.com' } };
   } else if (stepLower.includes('creat') || stepLower.includes('event') || stepLower.includes('book')) {
     return { thought: `I need to create the meeting event`, toolName: 'calendar', actionInput: { action: 'create_event', title: 'Team Meeting', date: new Date().toISOString().split('T')[0] } };
   }
@@ -102,7 +102,7 @@ export async function generateFinalResponse(
   userInput: string,
   completedSteps: Array<{ description: string; toolOutput: string }>,
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const stepsText = completedSteps.map((s, i) => `Step ${i + 1}: ${s.description}\nResult: ${s.toolOutput}`).join('\n\n');
 

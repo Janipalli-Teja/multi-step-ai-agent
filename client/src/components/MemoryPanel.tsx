@@ -14,7 +14,7 @@ const MemoryPanel: React.FC<MemoryPanelProps> = ({ taskMemory, longTermMemory, t
   const relevantLongTerm = task ? longTermMemory.filter(e => e.taskId === task.id) : longTermMemory;
 
   return (
-    <div className="bg-[#0d1117]/80 border border-white/5 rounded-2xl backdrop-blur-xl overflow-hidden flex flex-col max-h-[500px]">
+    <div className="bg-neutral-900/80 border border-white/5 rounded-2xl backdrop-blur-xl overflow-hidden flex flex-col max-h-[500px]">
       <div className="flex items-center gap-2 p-4 pb-0 mb-3">
         <span className="text-lg">🧠</span>
         <h3 className="text-sm font-bold text-slate-100">Memory System</h3>

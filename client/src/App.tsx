@@ -122,8 +122,8 @@ const App: React.FC = () => {
   return (
     <div className="relative min-h-screen text-slate-100 font-sans bg-bgBase overflow-x-hidden">
       <div className="fixed inset-0 pointer-events-none z-0 bg-grid" />
-      <div className="fixed rounded-full blur-[100px] pointer-events-none z-0 opacity-40 w-[600px] h-[600px] -top-[200px] -left-[200px] bg-[radial-gradient(circle,rgba(59,130,246,0.3),transparent_70%)]" />
-      <div className="fixed rounded-full blur-[100px] pointer-events-none z-0 opacity-40 w-[500px] h-[500px] -bottom-[150px] -right-[150px] bg-[radial-gradient(circle,rgba(139,92,246,0.25),transparent_70%)] animate-glow-drift" />
+      <div className="fixed rounded-full blur-[100px] pointer-events-none z-0 opacity-40 w-[600px] h-[600px] -top-[200px] -left-[200px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)]" />
+      <div className="fixed rounded-full blur-[100px] pointer-events-none z-0 opacity-40 w-[500px] h-[500px] -bottom-[150px] -right-[150px] bg-[radial-gradient(circle,rgba(255,255,255,0.05),transparent_70%)] animate-glow-drift" />
 
       {serverOnline === false && (
         <div className="relative z-50 bg-gradient-to-r from-amber-500/15 to-amber-500/5 border-b border-amber-500/30 px-6 py-2.5 text-[13px] text-amber-300 text-center">
@@ -131,15 +131,13 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <header className="relative z-50 flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-4 border-b border-white/5 bg-[#050810]/80 backdrop-blur-xl gap-4 md:gap-0">
+      <header className="relative z-50 flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-4 border-b border-white/5 bg-black/80 backdrop-blur-xl gap-4 md:gap-0">
         <div className="flex flex-row items-center justify-center gap-2">
           <span className="text-2xl animate-float">🤖</span>
-          <span className="text-xl font-extrabold bg-gradient-to-br from-blue-400 to-purple-400 bg-clip-text text-transparent">AgenticAI</span>
+          <span className="text-xl font-extrabold bg-gradient-to-br from-blue-400 to-purple-400 bg-clip-text text-transparent">AI Assistant</span>
         </div>
         
         <nav className="flex items-center justify-center md:justify-end gap-3 flex-wrap w-full md:w-auto">
-          <span className="text-[11px] font-semibold text-slate-400 bg-white/5 border border-white/5 rounded-full px-3 py-1 uppercase tracking-wider">ReAct Agent</span>
-          <span className="text-[11px] font-semibold text-slate-400 bg-white/5 border border-white/5 rounded-full px-3 py-1 uppercase tracking-wider">Gemini 1.5</span>
           
           <div className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full border ${serverOnline === true ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10' : serverOnline === false ? 'text-rose-400 border-rose-500/30 bg-rose-500/10' : 'text-amber-400 border-amber-500/30 bg-amber-500/10'}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${serverOnline === true ? 'bg-emerald-400 animate-pulse-dot shadow-[0_0_6px_#34d399]' : serverOnline === false ? 'bg-rose-400' : 'bg-amber-400 animate-fast-pulse-dot'}`} />
@@ -153,7 +151,7 @@ const App: React.FC = () => {
         <aside className="flex flex-col gap-4 order-2 lg:order-1">
           <TaskHistory tasks={allTasks} onSelectTask={handleSelectTask} currentTaskId={currentTask?.id} />
 
-          <div className="bg-[#0d1117]/80 border border-white/5 rounded-2xl p-4 backdrop-blur-xl">
+          <div className="bg-neutral-900/80 border border-white/5 rounded-2xl p-4 backdrop-blur-xl">
             <h4 className="text-xs font-bold uppercase tracking-[0.08em] text-slate-500 mb-3.5">Architecture</h4>
             <div className="flex flex-col items-center gap-1">
               {['User Input', 'Planner (LLM)', 'Agent Loop', 'Tool Layer', 'Memory', 'Response'].map((item, i, arr) => (
@@ -168,18 +166,22 @@ const App: React.FC = () => {
 
         <section className="flex flex-col gap-5 min-w-0 order-1 lg:order-2">
           <TaskInput onSubmit={handleSubmit} isRunning={isRunning} currentTask={currentTask} />
-          <AgentDashboard task={currentTask} liveThoughtIndex={liveThoughtIndex} />
+          <AgentDashboard 
+            task={currentTask} 
+            liveThoughtIndex={liveThoughtIndex} 
+            onRetry={() => currentTask && handleSubmit(currentTask.userInput)}
+          />
         </section>
 
         <aside className="flex flex-col gap-4 order-3 lg:order-3">
           <MemoryPanel taskMemory={taskMemory} longTermMemory={longTermMemory} task={currentTask} />
 
-          <div className="bg-[#0d1117]/80 border border-white/5 rounded-2xl p-4 backdrop-blur-xl">
+          <div className="bg-neutral-900/80 border border-white/5 rounded-2xl p-4 backdrop-blur-xl">
             <h4 className="text-xs font-bold uppercase tracking-[0.08em] text-slate-500 mb-3.5">Available Tools</h4>
             <div className="flex flex-col gap-2">
               {[
                 { icon: '📅', name: 'calendar', desc: 'Manage events' },
-                { icon: '📩', name: 'notification', desc: 'Send alerts' },
+                { icon: '📧', name: 'email_sender', desc: 'Send emails' },
                 { icon: '🔍', name: 'search', desc: 'Find info' },
                 { icon: '🧠', name: 'memory', desc: 'Store state' },
               ].map(tool => (

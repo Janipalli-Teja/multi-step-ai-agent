@@ -11,7 +11,7 @@ const TaskHistory: React.FC<TaskHistoryProps> = ({ tasks, onSelectTask, currentT
   if (tasks.length === 0) return null;
 
   return (
-    <div className="bg-[#0d1117]/80 border border-white/5 rounded-2xl p-4 backdrop-blur-xl">
+    <div className="bg-neutral-900/80 border border-white/5 rounded-2xl p-4 backdrop-blur-xl">
       <h3 className="text-xs font-bold uppercase tracking-[0.08em] text-slate-500 mb-3">📜 Task History</h3>
       <div className="flex flex-col gap-1.5 max-h-[280px] overflow-y-auto pr-1
         [&::-webkit-scrollbar]:w-1.5 

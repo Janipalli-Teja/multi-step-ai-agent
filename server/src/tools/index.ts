@@ -82,12 +82,11 @@ export const calendarTool: ToolDefinition = {
   },
 };
 
-// ─── Notification Tool ─────────────────────────────────────────────
-export const notificationTool: ToolDefinition = {
-  name: 'notification',
-  description: 'Sends notifications, emails, or messages to people about meetings or events.',
+// ─── Email Sender Tool ─────────────────────────────────────────────
+export const emailSenderTool: ToolDefinition = {
+  name: 'email_sender',
+  description: 'Sends emails to people about meetings or events.',
   parameters: {
-    type: { type: 'string', description: 'Notification type: email | slack | sms', required: true },
     recipients: { type: 'string', description: 'Comma-separated list of recipient names/emails', required: true },
     subject: { type: 'string', description: 'Subject line of the notification' },
     message: { type: 'string', description: 'Body of the notification message' },
@@ -110,8 +109,8 @@ export const notificationTool: ToolDefinition = {
 
     return {
       success: true,
-      data: { results, subject, message, channel: type },
-      summary: `✅ ${type.toUpperCase()} notifications sent to ${recipientList.length} recipient(s): ${recipientList.join(', ')}. Subject: "${subject}"`,
+      data: { results, subject, message },
+      summary: `✅ EMAIL sent to ${recipientList.length} recipient(s): ${recipientList.join(', ')}. Subject: "${subject}"`,
     };
   },
 };
@@ -191,7 +190,7 @@ export const memoryToolDef: ToolDefinition = {
 // ─── Tool Registry ─────────────────────────────────────────────────
 export const toolRegistry: Map<string, ToolDefinition> = new Map([
   ['calendar', calendarTool],
-  ['notification', notificationTool],
+  ['email_sender', emailSenderTool],
   ['search', searchTool],
   ['memory', memoryToolDef],
 ]);

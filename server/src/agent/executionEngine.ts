@@ -141,6 +141,10 @@ export async function runAgent(userInput: string): Promise<string> {
             stepCompleted = true;
           } else {
             step.status = 'retrying';
+            step.error = errorMsg;
+            // FEEDBACK: Pass the exact error back to the LLM via previousObservations
+            previousObservations += `\n[Attempt ${step.retryCount} Failed] Tool Error: ${errorMsg}. Adjust your next JSON input to fix this error.`;
+            
             broadcast(taskId, { type: 'step_started', taskId, data: { ...step, retryInfo: `Retry ${step.retryCount}/${MAX_RETRIES}` }, timestamp: new Date().toISOString() });
             await new Promise(r => setTimeout(r, 1000 * step.retryCount)); // exponential backoff
           }

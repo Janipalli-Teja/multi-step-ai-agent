@@ -38,14 +38,14 @@ const TaskInput: React.FC<TaskInputProps> = ({ onSubmit, isRunning, currentTask 
   const statusInfo = getStatusInfo();
 
   return (
-    <div className="bg-gradient-to-br from-gray-900/90 to-[#0d1117]/90 border border-white/5 rounded-2xl p-5 md:p-7 backdrop-blur-xl shadow-2xl">
+    <div className="bg-gradient-to-br from-neutral-900/90 to-black/90 border border-white/5 rounded-2xl p-5 md:p-7 backdrop-blur-xl shadow-2xl">
       <div className="flex flex-col md:flex-row items-center gap-4 mb-6 text-center md:text-left">
         <div className="relative w-[52px] h-[52px] flex items-center justify-center shrink-0">
           <div className="absolute inset-0 rounded-full border-2 border-transparent bg-gradient-to-br from-blue-500 to-violet-500 [mask-image:linear-gradient(#fff_0_0)] [mask-composite:exclude] animate-spin-slow" />
           <span className="text-2xl z-10">🤖</span>
         </div>
         <div>
-          <h1 className="text-[22px] font-extrabold bg-gradient-to-br from-blue-400 to-purple-400 bg-clip-text text-transparent">AgenticAI</h1>
+          <h1 className="text-[22px] font-extrabold bg-gradient-to-br from-blue-400 to-purple-400 bg-clip-text text-transparent">AI Assistant</h1>
           <p className="text-xs text-slate-500 mt-0.5">Autonomous Multi-Step AI Agent</p>
         </div>
         {statusInfo && (

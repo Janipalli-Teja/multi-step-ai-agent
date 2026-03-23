@@ -3,7 +3,7 @@ import { type AgentStep, type StepStatus } from '../types';
 
 const TOOL_ICONS: Record<string, string> = {
   calendar: '📅',
-  notification: '📩',
+  email_sender: '📧',
   search: '🔍',
   memory: '🧠',
 };

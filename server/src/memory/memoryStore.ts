@@ -8,7 +8,7 @@ class MemoryStore {
   initSession(taskId: string): MemoryState {
     const memory: MemoryState = {
       shortTerm: {},
-      longTerm: this.longTermStore.slice(-20), // last 20 entries
+      longTerm: [], // Start fresh as per user request
     };
     this.sessions.set(taskId, memory);
     return memory;

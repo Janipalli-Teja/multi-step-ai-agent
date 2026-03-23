@@ -4,7 +4,7 @@ import { getToolDescriptions } from '../tools';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 export async function planTask(userInput: string): Promise<string[]> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `You are an autonomous AI agent planner. 
 Your job is to break down a user's high-level task into clear, specific, actionable steps.
@@ -90,7 +90,7 @@ export async function generateFinalResponse(
   userInput: string,
   completedSteps: Array<{ description: string; toolOutput: string }>,
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
   const stepsText = completedSteps.map((s, i) => `Step ${i + 1}: ${s.description}\nResult: ${s.toolOutput}`).join('\n\n');
 
   const prompt = `Task: "${userInput}"

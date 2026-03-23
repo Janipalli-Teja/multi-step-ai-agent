@@ -4,6 +4,8 @@ An advanced, full-stack autonomous AI agent that uses the **ReAct (Reasoning + A
 
 This project connects a complex Express/Node.js backend agent to a beautiful, fully responsive React frontend dashboard via Server-Sent Events (SSE) to visualize the agent's thought process in real-time.
 
+**🌐 Live Demo:** [https://multi-step-ai-agent-afkwncvsb-tejas-projects-3557902a.vercel.app/](https://multi-step-ai-agent-afkwncvsb-tejas-projects-3557902a.vercel.app/)
+
 ---
 
 ## ✨ Core Features

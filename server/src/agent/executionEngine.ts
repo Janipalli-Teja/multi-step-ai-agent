@@ -122,13 +122,22 @@ export async function runAgent(userInput: string): Promise<string> {
             completedStepOutputs.push({ description: step.description, toolOutput: toolResult.summary });
             broadcast(taskId, { type: 'step_completed', taskId, data: step, timestamp: new Date().toISOString() });
             broadcast(taskId, { type: 'memory_updated', taskId, data: memoryStore.getSession(taskId), timestamp: new Date().toISOString() });
+            
+            // ── Rate Limit Buffer ──
+            // Add a 2.5s delay after every successful step to prevent hitting the Gemini Free Tier 15 RPM burst limit
+            await new Promise(r => setTimeout(r, 2500));
           } else {
             throw new Error(toolResult.error || 'Tool returned failure');
           }
 
         } catch (err) {
           step.retryCount++;
-          const errorMsg = err instanceof Error ? err.message : String(err);
+          let errorMsg = err instanceof Error ? err.message : String(err);
+          
+          if (errorMsg.includes('429') || errorMsg.includes('quota')) {
+            errorMsg = 'API Quota Exceeded (429). Please wait a moment and hit Retry.';
+          }
+
           console.error(`[Agent ${taskId}] Step ${step.stepNumber} failed (attempt ${step.retryCount}): ${errorMsg}`);
 
           if (step.retryCount > MAX_RETRIES) {
@@ -165,7 +174,12 @@ export async function runAgent(userInput: string): Promise<string> {
     return taskId;
 
   } catch (err) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
+    let errorMsg = err instanceof Error ? err.message : String(err);
+    
+    if (errorMsg.includes('429') || errorMsg.includes('quota')) {
+      errorMsg = 'API Quota Exceeded (429). Please wait a moment and try again.';
+    }
+
     task.status = 'failed';
     task.completedAt = new Date().toISOString();
     tasks.set(taskId, task);

@@ -20,7 +20,7 @@ This project connects a complex Express/Node.js backend agent to a beautiful, fu
 ## 🛠️ Tech Stack
 * **Frontend:** React, TypeScript, Vite, Tailwind CSS v3
 * **Backend:** Node.js, Express, TypeScript, Server-Sent Events (SSE)
-* **LLM:** Google Gemini API (`gemini-1.5-flash`)
+* **LLM:** Google Gemini API (`gemini-2.5-flash`)
 * **Framework:** Custom ReAct built from scratch without external orchestrators (LangChain, etc.)
 
 ---

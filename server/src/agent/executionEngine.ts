@@ -91,8 +91,7 @@ export async function runAgent(userInput: string): Promise<string> {
       while (!stepCompleted && step.retryCount <= MAX_RETRIES) {
         try {
           // THINK
-          const memorySummary = memoryStore.summarize(taskId);
-          const agentThought = await think(taskId, userInput, step.description, previousObservations, memorySummary);
+          const agentThought = await think(taskId, userInput, step.description, previousObservations);
 
           step.thought = agentThought.thought;
           step.toolUsed = agentThought.toolName;

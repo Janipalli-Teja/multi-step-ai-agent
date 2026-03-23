@@ -47,7 +47,7 @@ export async function think(
   currentStep: string,
   previousObservations: string,
 ): Promise<{ thought: string; toolName: string; actionInput: Record<string, unknown> }> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `Task: "${userInput}"
 Ongoing: "${currentStep}"
